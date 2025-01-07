@@ -203,11 +203,27 @@ namespace IcsFilter
             return result.ToString().Replace("\n", "\r\n");
         }
 
+        private int GetTimeStamp(DateTime date)
+        {
+            return (int)Math.Floor(date.Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
+        }
+
+        private int GetStartTimeStamp()
+        {
+            return GetTimeStamp(DateTime.Now.AddYears(-1));
+        }
+
+        private string GetStartParameter()
+        {
+            return string.Format("&start={0}", GetStartTimeStamp());
+        }
+
         public CalaendarModule()
         {
             Get("/{name}", parameters =>
             {
                 string nameString = parameters.name;
+                var startRequest = DateTime.Now;
                 var config = Global.Config.Calendars.FirstOrDefault(c => c.Name.ToLowerInvariant() == nameString);
 
                 if (config == null)
@@ -218,12 +234,22 @@ namespace IcsFilter
 
                 foreach (var privateUrl in config.PrivateUrls)
                 {
-                    var text = client.DownloadString(privateUrl);
+                    var url = privateUrl + GetStartParameter();
+                    Global.Log.Info("Download url {0}", url);
+                    var startDownload = DateTime.Now;
+                    var text = client.DownloadString(url);
+                    var endDownload = DateTime.Now;
+                    var timeDownload = endDownload.Subtract(startDownload).TotalSeconds;
+                    Global.Log.Info("Download of {0} bytes took {1:0.00}s", text.Length, timeDownload);
                     var filtered = Filter(text, config.Name);
                     cals.Add(filtered);
                 }
 
                 var merged = Merge(cals);
+
+                var endRequest = DateTime.Now;
+                var timeRequest = endRequest.Subtract(startRequest).TotalSeconds;
+                Global.Log.Info("Request of {0} bytes took {1:0.00}s", merged.Length, timeRequest);
 
                 return merged;
             });
