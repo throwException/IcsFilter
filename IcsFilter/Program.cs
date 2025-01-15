@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Nancy.Hosting.Self;
+using ThrowException.CSharpLibs.LogLib;
 
 namespace IcsFilter
 {
@@ -14,19 +15,19 @@ namespace IcsFilter
                 throw new FileNotFoundException("Config file not found");
             }
 
-            Global.Config.Load(args[0]);
+            Global.LoadConfig(args[0]);
 
             var uri = "http://localhost:8888";
             Global.Log.Notice("Starting ICS filter  on " + uri);
 
-            // initialize an instance of NancyHost
             var host = new NancyHost(new Uri(uri));
-            host.Start();  // start hosting
+            host.Start();
 
             Global.Log.Notice("Application started");
 
             while (true)
             {
+                Global.Cache.Update();
                 System.Threading.Thread.Sleep(1000);
             }
         }

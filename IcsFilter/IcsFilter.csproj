@@ -7,7 +7,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>IcsFilter</RootNamespace>
     <AssemblyName>IcsFilter</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,17 +40,29 @@
       <HintPath>..\packages\Nancy.Hosting.Self.2.0.0\lib\net452\Nancy.Hosting.Self.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net" />
+    <Reference Include="ThrowException.CSharpLibs.LogLib">
+      <HintPath>..\packages\ThrowException.CSharpLibs.LogLib.1.0.1\lib\net48\ThrowException.CSharpLibs.LogLib.dll</HintPath>
+    </Reference>
+    <Reference Include="ThrowException.CSharpLibs.TypeParserLib">
+      <HintPath>..\packages\ThrowException.CSharpLibs.TypeParserLib.1.1.0\lib\net48\ThrowException.CSharpLibs.TypeParserLib.dll</HintPath>
+    </Reference>
+    <Reference Include="ThrowException.CSharpLibs.ConfigParserLib">
+      <HintPath>..\packages\ThrowException.CSharpLibs.ConfigParserLib.1.1.1\lib\net48\ThrowException.CSharpLibs.ConfigParserLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\Config.cs" />
-    <Compile Include="Util\Logger.cs" />
     <Compile Include="Util\Dates.cs" />
     <Compile Include="Util\Bytes.cs" />
     <Compile Include="Global.cs" />
-    <Compile Include="IcsFilterConftig.cs" />
+    <Compile Include="IcsFilterConfig.cs" />
     <Compile Include="CalaendarModule.cs" />
+    <Compile Include="InputCache.cs" />
+    <Compile Include="OutputCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
